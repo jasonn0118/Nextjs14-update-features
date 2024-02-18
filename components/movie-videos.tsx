@@ -2,7 +2,13 @@ import { MOVIES_URL } from '../app/(home)/page';
 
 async function getVideos(id: string) {
   await new Promise((resolve) => setTimeout(resolve, 5000));
+
   const response = await fetch(`${MOVIES_URL}/${id}/videos`);
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch videos data');
+  }
+
   return response.json();
 }
 
