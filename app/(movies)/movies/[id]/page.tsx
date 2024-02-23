@@ -1,11 +1,19 @@
 import { Suspense } from 'react';
 import { MOVIES_URL } from '../../../(home)/page';
-import MovieInfo from '../../../../components/movie-info';
-import MovieVideos from '../../../../components/movie-videos';
+import MovieInfo, {
+  getMovie,
+} from '../../../../components/movie-info/movie-info';
+import MovieVideos from '../../../../components/movie-video/movie-videos';
 
-export const metadata = {
-  title: 'Movie',
-};
+interface IParams {
+  params: { id: string };
+}
+
+export async function generateMetadata({ params: { id } }: IParams) {
+  // It is okay to use fetch here and movie-info in both, because of beauty of caching.
+  const movie = await getMovie(id);
+  return { title: movie.title };
+}
 
 // async function getMovie(id: string) {
 //   await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -19,11 +27,7 @@ export const metadata = {
 //   return response.json();
 // }
 
-export default async function MovieDetail({
-  params: { id },
-}: {
-  params: { id: string };
-}) {
+export default async function MovieDetailPage({ params: { id } }: IParams) {
   // const movieData = getMovie(id);
   // const videoData = getVideos(id);
   // The problem of below line is if user wants to see the UI, two fetches has to be done.
