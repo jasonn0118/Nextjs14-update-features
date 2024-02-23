@@ -33,7 +33,6 @@ export default async function MovieDetailPage({ params: { id } }: IParams) {
   // const [movie, video] = await Promise.all([movieData, videoData]);
   return (
     <div>
-      <h3>Movie Detail Page</h3>
       <Suspense fallback={<h1>Loading movie info</h1>}>
         <MovieInfo id={id} />
       </Suspense>
