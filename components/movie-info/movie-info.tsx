@@ -2,7 +2,6 @@ import { MOVIES_URL } from '../../constants';
 import styles from './movie-info.module.css';
 
 export async function getMovie(id: string) {
-  await new Promise((resolve) => setTimeout(resolve, 1000));
   const response = await fetch(`${MOVIES_URL}/${id}`);
 
   if (!response.ok) {

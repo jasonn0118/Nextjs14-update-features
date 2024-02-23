@@ -2,8 +2,6 @@ import { MOVIES_URL } from '../../constants';
 import styles from './movie-video.module.css';
 
 async function getVideos(id: string) {
-  await new Promise((resolve) => setTimeout(resolve, 5000));
-
   const response = await fetch(`${MOVIES_URL}/${id}/videos`);
 
   if (!response.ok) {
