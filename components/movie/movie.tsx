@@ -17,7 +17,7 @@ export default function Movie({ id, title, poster_path }: IMovieProps) {
   return (
     <div className={styles.movie}>
       <img src={poster_path} alt={title} onClick={onClick} />
-      // prefetch makes prefetching the page before a user clicks.
+      {/* prefetch makes prefetching the page before a user clicks. */}
       <Link prefetch href={`/movies/${id}`}>
         {title}
       </Link>
