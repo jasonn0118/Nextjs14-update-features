@@ -1,5 +1,4 @@
 import { Suspense } from 'react';
-import { MOVIES_URL } from '../../../(home)/page';
 import MovieInfo, {
   getMovie,
 } from '../../../../components/movie-info/movie-info';
