@@ -75,3 +75,42 @@ export const revalidate = 3600; // revalidate at most every hour
 ```
 
 inside of _layout.js_ | _page.js_
+
+If you have multiple fetch requests in a statically rendered route, and each has a different revalidation frequency. The lowest time will be used for all requests.
+
+**On-demand Revalidation**
+Data can be revalidated on-demand by path ([`revalidatePath`](https://nextjs.org/docs/app/api-reference/functions/revalidatePath)) or by cache tag ([`revalidateTag`](https://nextjs.org/docs/app/api-reference/functions/revalidateTag)) inside a [Server Action](https://nextjs.org/docs/app/building-your-application/data-fetching/server-actions-and-mutations) or [Route Handler](https://nextjs.org/docs/app/building-your-application/routing/route-handlers).
+
+Next.js has a cache tagging system for invalidating fetch requests across routes.
+
+When using fetch, you have the option to tag cache entries with one or more tags. Then, you can call revalidateTag to revalidate all entries associated with that tag.
+
+For example, the following `fetch` request adds the cache tag `collection`:
+
+```ts
+export default async function Page() {
+  const res = await fetch('https://...', { next: { tags: ['collection'] } });
+  const data = await res.json();
+  // ...
+}
+```
+
+You can then revalidate this `fetch` call tagged with `collection` by calling `revalidateTag` in a Server Action:
+
+```ts
+'use server';
+
+import { revalidateTag } from 'next/cache';
+
+export default async function action() {
+  revalidateTag('collection');
+}
+```
+
+**Error handling and revalidation**
+If an error is thrown while attempting to revalidate data, the last successfully generated data will continue to be served from the cache. On the next subsequent request, Next.js will retry revalidating the data.
+
+**Multiple `fetch` Requests**
+If you have multiple `fetch` requests in a route segment (e.g. a Layout or Page), you can configure the caching behavior of all data requests in the segment using the [Segment Config Options](https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config).
+
+> However, we recommend configuring the caching behavior of each fetch request individually. This gives you more granular control over the caching behavior.
